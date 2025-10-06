@@ -1,36 +1,33 @@
-from fastapi import FastAPI, Request, Form
+from fastapi import FastAPI, Form, UploadFile, File
 from fastapi.responses import HTMLResponse
-from fastapi.templating import Jinja2Templates
-import random
 
 app = FastAPI()
-templates = Jinja2Templates(directory="templates")
 
+# Home page with form
 @app.get("/", response_class=HTMLResponse)
-async def home(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+def home():
+    return """
+    <h2>Upload Form</h2>
+    <form action="/validate" method="post" enctype="multipart/form-data">
+        Name: <input type="text" name="name" required><br><br>
+        File: <input type="file" name="file"><br><br>
+        <input type="submit" value="Submit">
+    </form>
+    """
 
+# Endpoint to handle form submission
 @app.post("/validate", response_class=HTMLResponse)
-async def validate_bank(
-    request: Request,
-    bank_name: str = Form(...),
-    ifsc: str = Form(...),
-    account_number: str = Form(...)
+async def validate(
+    name: str = Form(...), 
+    file: UploadFile | None = File(None)
 ):
-    # Basic input check
-    if len(account_number) < 6 or len(ifsc) < 6:
-        result = {"status": "failed", "message": "Invalid IFSC or account number"}
+    if file:
+        content = await file.read()
+        file_info = f"Uploaded file: {file.filename} ({len(content)} bytes)"
     else:
-        # Mock success response (you can replace this with real API later)
-        name_list = ["RAHUL KUMAR", "PRIYA SHARMA", "AMAN VERMA", "NEHA SINGH"]
-        result = {
-            "status": "success",
-            "bank_name": bank_name.title(),
-            "account_holder_name": random.choice(name_list),
-            "ifsc": ifsc.upper(),
-            "account_number": account_number,
-            "verified": True,
-            "message": "Account holder name verified successfully."
-        }
-
-    return templates.TemplateResponse("index.html", {"request": request, "result": result})
+        file_info = "No file uploaded"
+    
+    return f"""
+    <h2>Hello {name}!</h2>
+    <p>{file_info}</p>
+    """
