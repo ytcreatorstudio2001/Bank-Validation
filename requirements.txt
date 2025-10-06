@@ -1,5 +1,6 @@
 fastapi==0.118.0
-uvicorn==0.23.2  # make sure this matches FastAPI version
-pandas==2.1.1     # if you use pandas
-python-multipart==0.0.6  # if handling file uploads
-requests==2.32.0  # if making HTTP requests
+uvicorn==0.23.2
+pandas==2.0.3
+python-multipart==0.0.6
+openpyxl==3.1.2       # if you work with Excel files
+aiofiles==23.1.0      # for file uploads with FastAPI
