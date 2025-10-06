@@ -1,5 +1,5 @@
-fastapi==0.111.2
-uvicorn[standard]==0.23.2
-pandas==2.1.1
-python-multipart==0.0.6
-requests==2.31.0
+fastapi==0.118.0
+uvicorn==0.23.2  # make sure this matches FastAPI version
+pandas==2.1.1     # if you use pandas
+python-multipart==0.0.6  # if handling file uploads
+requests==2.32.0  # if making HTTP requests
