@@ -1,3 +1,5 @@
-fastapi
-uvicorn
-jinja2
+fastapi==0.111.2
+uvicorn[standard]==0.23.2
+pandas==2.1.1
+python-multipart==0.0.6
+requests==2.31.0
